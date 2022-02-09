@@ -1,0 +1,121 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Magnet Simulator 2 | Soggy Hub", "Serpent")
+
+local Tab = Window:NewTab("Main")
+local Section = Tab:NewSection("Main")
+local phrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+local coinfarm = true 
+
+Section:NewButton("AutoCollect Basic Coins", "", function()
+    wait()
+    while coinfarm == true do wait(0.1)
+        for i,v in pairs(game:GetService("Workspace").Coins:GetDescendants()) do 
+            if v.Name == "Base" then 
+                phrp.CFrame = v.CFrame
+            end
+        end
+    end
+end)
+
+Section:NewButton("Stop Farming Basic Coins", "", function()
+    coinfarm = false;
+end)
+
+Section:NewButton("AutoSell 18x", "", function()
+    wait()
+    for i,v in pairs(game:GetService("Workspace").Rings.Sellx18:GetDescendants()) do 
+        if v.Name == "TouchInterest" and v.Parent then
+            wait()
+            firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 0)
+            firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 1)
+        end
+    end
+end)
+
+local Tab = Window:NewTab("Eggs + Pets")
+local Section = Tab:NewSection("Eggs")
+
+Section:NewButton("Auto Equip Best", "", function()
+while true do wait(5)
+    game:GetService("ReplicatedStorage").Events.PetEvents.EquipBest:FireServer()
+    end
+end)
+
+local eggs = {};
+for i,v in pairs(game:GetService("Workspace")["_Eggs"]:GetChildren()) do
+    table.insert(eggs, v.Name)
+end
+
+Section:NewDropdown("Eggs", "Dropdown To See Eggs", eggs, function(currentOption)
+    wait()
+    SelectedEgg = currentOption
+end)
+
+Section:NewToggle("Open Selected Egg", "", function(state)
+        local autoeggs = true;
+        while autoeggs do
+        wait()
+        if state then
+            local args = {
+                [1] = (SelectedEgg)
+            }
+            
+            game:GetService("ReplicatedStorage").Events.GameEvents.BuyEgg:FireServer(unpack(args))
+			else
+            local autoeggs = false;  
+        end
+    end
+end)
+
+local Tab = Window:NewTab("Areas")
+local Section = Tab:NewSection("Areas")
+
+Section:NewButton("Unlock All Areas", "", function()
+    game:GetService("Workspace")["_Gates"]:Destroy()
+end)
+
+local Tab = Window:NewTab("Upgrades")
+local Section = Tab:NewSection("Upgrades")
+
+Section:NewButton("Auto Upgrade Speed", "", function()
+    local upgSPD = true
+    while upgSPD == true do wait()
+    game:GetService("ReplicatedStorage").Events.GameEvents.UpgradeSpeed:FireServer()
+    end
+end)
+
+Section:NewButton("Auto Upgrade Backpack", "", function()
+    local upgBP = true 
+    while upgBP == true do 
+        game:GetService("ReplicatedStorage").Events.GameEvents.UpgradeStorage:FireServer()
+    wait()
+    end
+end)
+
+Section:NewButton("Stop Auto Upgrade Speed", "", function()
+    local upgSPD = false
+end)
+
+Section:NewButton("Stop Auto Upgrade Backpack", "", function()
+    local upgBP = false
+end)
+
+local Tab = Window:NewTab("Achievements")
+local Section = Tab:NewSection("Achievements")
+
+Section:NewButton("Complete All Achievements", "", function()
+        for i,v in pairs(game:GetService("ReplicatedStorage").ReplicatedData:GetDescendants()) do 
+        wait()
+        if v.Name == game.Players.LocalPlayer.Name then 
+            v:GetDescendants() do 
+                if v.Name == "Achievements" then 
+                    v:GetDescendants() do 
+                        if v.Name == "Progress" then 
+                        v.Value = 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
+                        end
+                    end
+                end
+            end
+        end
+    end
+end)
