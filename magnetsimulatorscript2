@@ -27,7 +27,7 @@ Section:NewButton("Stop Farming Basic Coins", "", function()
     game.Players.LocalPlayer.Character.Humanoid.Health = 0
 end)
 
-Section:NewButton("AutoSell 18x", "", function()
+Section:NewButton("AutoSell 25x", "", function()
 	while true do 
     wait()
     for i,v in pairs(game:GetService("Workspace").Rings.Sellx25:GetDescendants()) do 
@@ -36,8 +36,25 @@ Section:NewButton("AutoSell 18x", "", function()
             firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 0)
             firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 1)
 		        end
-		    end
+		end
     	end
+	for i,v in pairs(game:GetService("Players").Qoucx.PlayerGui.Game.OpenableUi:GetDescendants()) do 
+	if v.Name == "MaxCoins" then 
+	v:Destroy()
+	end
+    end
+end)
+
+Section:NewButton("Auto Daily Rewards + Group", "", function()
+for i,v in pairs(game:GetService("Workspace")["_Dailys"]:GetDescendants()) do 
+wait()
+		while true do wait()
+			if v.Name == "TouchInterest" and v.Parent then 
+	            firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 0)
+	            firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 1)
+	    		end
+	    	end
+	    end
 end)
 
 local Tab = Window:NewTab("Eggs + Pets")
