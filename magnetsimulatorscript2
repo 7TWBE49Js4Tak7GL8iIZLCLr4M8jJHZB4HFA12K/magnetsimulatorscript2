@@ -6,19 +6,25 @@ local Section = Tab:NewSection("Main")
 local phrp = game.Players.LocalPlayer.Character.HumanoidRootPart
 local coinfarm = true 
 
-Section:NewButton("AutoCollect Basic Coins", "", function()
-    wait()
-    while coinfarm == true do wait(0.1)
-        for i,v in pairs(game:GetService("Workspace").Coins:GetDescendants()) do 
-            if v.Name == "Base" then 
-                phrp.CFrame = v.CFrame
-            end
-        end
+autoEggs = true
+coinfarm = true 
+
+Section:NewButton("Autofarm Coins", "", function()
+
+while coinfarm == true do wait()
+    for i,v in pairs(game:GetService("Workspace").CollectibleCoins.Heaven["Heaven_BigCoinStack"]:GetDescendants()) do 
+    	if v.Name == "Base" then wait(5)
+    		game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),{CFrame = v.CFrame}):Play()
+    	end
     end
+end
+
 end)
 
 Section:NewButton("Stop Farming Basic Coins", "", function()
-    coinfarm = false;
+    game.Players.LocalPlayer.Character.HumanoidRootPart:Destroy()
+    wait(1)
+    game.Players.LocalPlayer.Character.Humanoid.Health = 0
 end)
 
 Section:NewButton("AutoSell 18x", "", function()
@@ -53,20 +59,19 @@ Section:NewDropdown("Eggs", "Dropdown To See Eggs", eggs, function(currentOption
     SelectedEgg = currentOption
 end)
 
-Section:NewToggle("Open Selected Egg", "", function(state)
-        local autoeggs = true;
-        while autoeggs do
-        wait()
-        if state then
-            local args = {
-                [1] = (SelectedEgg)
-            }
-            
-            game:GetService("ReplicatedStorage").Events.GameEvents.BuyEgg:FireServer(unpack(args))
-			else
-            local autoeggs = false;  
-        end
-    end
+
+Section:NewButton("Auto Open Selected Egg", "", function()
+    while autoEggs == true do wait()
+    local args = {
+	[1] = (SelectedEgg)
+    }
+
+    game:GetService("ReplicatedStorage").Events.GameEvents.BuyEgg:FireServer(unpack(args))
+	end
+end)
+
+Section:NewButton("Stop Auto Opening Eggs", "", function()
+	autoEggs = false;
 end)
 
 local Tab = Window:NewTab("Areas")
@@ -80,14 +85,14 @@ local Tab = Window:NewTab("Upgrades")
 local Section = Tab:NewSection("Upgrades")
 
 Section:NewButton("Auto Upgrade Speed", "", function()
-    local upgSPD = true
+    upgSPD = true
     while upgSPD == true do wait()
     game:GetService("ReplicatedStorage").Events.GameEvents.UpgradeSpeed:FireServer()
     end
 end)
 
 Section:NewButton("Auto Upgrade Backpack", "", function()
-    local upgBP = true 
+    upgBP = true 
     while upgBP == true do 
         game:GetService("ReplicatedStorage").Events.GameEvents.UpgradeStorage:FireServer()
     wait()
@@ -95,11 +100,11 @@ Section:NewButton("Auto Upgrade Backpack", "", function()
 end)
 
 Section:NewButton("Stop Auto Upgrade Speed", "", function()
-    local upgSPD = false
+    upgSPD = false
 end)
 
 Section:NewButton("Stop Auto Upgrade Backpack", "", function()
-    local upgBP = false
+    upgBP = false
 end)
 
 local Tab = Window:NewTab("Achievements")
@@ -108,16 +113,58 @@ local Section = Tab:NewSection("Achievements")
 Section:NewButton("Complete All Achievements", "", function()
         for i,v in pairs(game:GetService("ReplicatedStorage").ReplicatedData:GetDescendants()) do 
         wait()
-        if v.Name == game.Players.LocalPlayer.Name then 
-            v:GetDescendants() do 
-                if v.Name == "Achievements" then 
-                    v:GetDescendants() do 
-                        if v.Name == "Progress" then 
-                        v.Value = 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-                        end
-                    end
-                end
-            end
+		if v.Name == "Progress" then 
+			 v.Value = 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
         end
     end
+end)
+
+local Tab = Window:NewTab("Player")
+local Section = Tab:NewSection("Player")
+Section:NewSlider("Walkspeed", "Walkspeed", 250, 50, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
+end)
+
+Section:NewSlider("Jumppower", "Jumppower", 250, 50, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
+end)
+
+Section:NewSlider("FOV", "FOV", 120, 70, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game:GetService("Workspace").Camera.FieldOfView = s
+end)
+
+local Tab = Window:NewTab("Settings")
+local Section = Tab:NewSection("Settings")
+Section:NewKeybind("ToggleUI", "ToggleUI", Enum.KeyCode.F, function()
+	Library:ToggleUI()
+end)
+
+local Tab = Window:NewTab("Credits")
+local Section = Tab:NewSection("Credits")
+Section:NewButton("Owner + Scripter | sunken#0001", "", function()
+    setclipboard("sunken#0001")
+end)
+
+Section:NewButton("Join the discord!", "", function()
+    	local http = game:GetService('HttpService') 
+	if toClipboard then
+		toClipboard('https://discord.gg/DMTKwpEWnR')
+	else
+	end
+	local req = syn and syn.request or http and http.request or http_request or fluxus and fluxus.request or getgenv().request or request
+	if req then
+		req({
+			Url = 'http://127.0.0.1:6463/rpc?v=1',
+			Method = 'POST',
+			Headers = {
+				['Content-Type'] = 'application/json',
+				Origin = 'https://discord.com'
+			},
+			Body = http:JSONEncode({
+				cmd = 'INVITE_BROWSER',
+				nonce = http:GenerateGUID(false),
+				args = {code = 'GYrTQEryum'}
+			})
+		})
+	end
 end)
