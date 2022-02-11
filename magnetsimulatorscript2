@@ -22,14 +22,16 @@ Section:NewButton("Stop Farming Basic Coins", "", function()
 end)
 
 Section:NewButton("AutoSell 18x", "", function()
+	while true do 
     wait()
     for i,v in pairs(game:GetService("Workspace").Rings.Sellx18:GetDescendants()) do 
         if v.Name == "TouchInterest" and v.Parent then
             wait()
             firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 0)
             firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 1)
-        end
-    end
+		        end
+		    end
+    	end
 end)
 
 local Tab = Window:NewTab("Eggs + Pets")
