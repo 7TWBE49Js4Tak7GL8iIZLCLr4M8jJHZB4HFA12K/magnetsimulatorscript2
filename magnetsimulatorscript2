@@ -91,6 +91,15 @@ Section:NewButton("Stop Auto Opening Eggs", "", function()
 	autoEggs = false;
 end)
 
+local Tab = Window:NewTab("Gamepasses")
+local Section = Tab:NewSection("Gamepasses")
+
+Section:NewButton("Unlock All Gamepasses", "", function()
+for i, v in pairs(game:GetService("Players").LocalPlayer.Gamepasses:GetChildren()) do
+v.Value = true
+wait()
+end)
+
 local Tab = Window:NewTab("Areas")
 local Section = Tab:NewSection("Areas")
 
