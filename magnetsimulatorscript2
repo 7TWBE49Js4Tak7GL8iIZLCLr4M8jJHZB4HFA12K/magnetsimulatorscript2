@@ -1,144 +1,90 @@
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Magnet Simulator 2 | Soggy Hub | v2.1 ", "Serpent")
+local DiscordLib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/discord%20lib.txt")()
 
-local Tab = Window:NewTab("Main")
-local Section = Tab:NewSection("Main")
-local phrp = game.Players.LocalPlayer.Character.HumanoidRootPart
-local coinfarm = true 
+local win = DiscordLib:Window("Soggy Hub V2 | sunken#0001 | Last Update 12/02/22")
 
-autoEggs = true
-coinfarm = true 
+local serv = win:Server("Magnet Simulator 2", "")
 
-Section:NewButton("Autofarm Coins", "", function()
+local btns = serv:Channel("Autofarm")
 
-while coinfarm == true do wait()
-    for i,v in pairs(game:GetService("Workspace").CollectibleCoins.Heaven["Heaven_BigCoinStack"]:GetDescendants()) do 
-    	if v.Name == "Base" then wait(5)
-    		game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),{CFrame = v.CFrame}):Play()
-    	end
+local hum = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+btns:Seperator()
+
+btns:Toggle("Autofarm Coins",false, function(bool)
+    hum.CFrame = CFrame.new(2836.9079589844, 4.0980253219604, 491.6496887207)
+    wait(0.5)
+    getgenv().coinfarm = bool 
+
+    while coinfarm do wait()
+        for i,v in pairs(game:GetService("Workspace").CollectibleCoins.Heaven["Heaven_BigCoinStack"]:GetDescendants()) do 
+            if v.Name == "Base" then wait(1.5)
+                game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0.75, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),{CFrame = v.CFrame}):Play()
+                if not bool then 
+                    break 
+                end            
+            end
+        end
     end
-end
-
 end)
 
-Section:NewButton("Stop Farming Basic Coins", "", function()
-    game.Players.LocalPlayer.Character.HumanoidRootPart:Destroy()
-    wait(1)
-    game.Players.LocalPlayer.Character.Humanoid.Health = 0
+btns:Seperator()
+
+btns:Label("This will not stop upon turning it off.")
+
+btns:Seperator()
+
+btns:Label("Just wait 30 seconds, or only use it.")
+
+btns:Seperator()
+
+btns:Label("When you are going to AFK grind.")
+
+btns:Seperator()
+
+btns:Toggle("Auto Sell",false, function(bool)
+    getgenv().autosell = bool 
+
+    while autosell do wait()
+        for i,v in pairs(game:GetService("Workspace").Rings.Sellx25:GetDescendants()) do 
+            if v.Name == "TouchInterest" and v.Parent then
+                wait()
+                firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 0)
+                firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 1)
+            end
+        end
+    end
 end)
 
-Section:NewButton("AutoSell 25x", "", function()
-	while true do 
-    wait()
-    for i,v in pairs(game:GetService("Workspace").Rings.Sellx25:GetDescendants()) do 
-        if v.Name == "TouchInterest" and v.Parent then
-            wait()
+btns:Seperator()
+
+btns:Button("Anti - AFK", function()
+    game:GetService("Players").LocalPlayer.Idled:connect(function()
+        game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+    end)
+end)
+
+local btns = serv:Channel("Rewards")
+
+btns:Seperator()
+
+btns:Toggle("Auto Collect Chests",false, function(bool)
+    getgenv().autocollectchests = bool 
+
+    while autocollectchests do wait()
+        for i,v in pairs(game:GetService("Workspace")["_Dailys"]:GetDescendants()) do 
+        wait()
+        if v.Name == "TouchInterest" and v.Parent then 
             firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 0)
             firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 1)
-		        end
-		end
-    	end
-	for i,v in pairs(game:GetService("Players").Qoucx.PlayerGui.Game.OpenableUi:GetDescendants()) do 
-	if v.Name == "MaxCoins" then 
-	v:Destroy()
-	end
+            end
+        end
     end
 end)
 
-Section:NewButton("Auto Daily Rewards + Group", "", function()
-for i,v in pairs(game:GetService("Workspace")["_Dailys"]:GetDescendants()) do 
-wait()
-		while true do wait()
-			if v.Name == "TouchInterest" and v.Parent then 
-	            firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 0)
-	            firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 1)
-	    		end
-	    	end
-	    end
-end)
+btns:Seperator()
 
-local Tab = Window:NewTab("Eggs + Pets")
-local Section = Tab:NewSection("Eggs")
-
-Section:NewButton("Auto Equip Best", "", function()
-while true do wait(5)
-    game:GetService("ReplicatedStorage").Events.PetEvents.EquipBest:FireServer()
-    end
-end)
-
-local eggs = {};
-for i,v in pairs(game:GetService("Workspace")["_Eggs"]:GetChildren()) do
-    table.insert(eggs, v.Name)
-end
-
-Section:NewDropdown("Eggs", "Dropdown To See Eggs", eggs, function(currentOption)
-    wait()
-    SelectedEgg = currentOption
-end)
-
-
-Section:NewButton("Auto Open Selected Egg", "", function()
-    while autoEggs == true do wait()
-    local args = {
-	[1] = (SelectedEgg)
-    }
-
-    game:GetService("ReplicatedStorage").Events.GameEvents.BuyEgg:FireServer(unpack(args))
-	end
-end)
-
-Section:NewButton("Stop Auto Opening Eggs", "", function()
-	autoEggs = false;
-end)
-
-local Tab = Window:NewTab("Gamepasses")
-local Section = Tab:NewSection("Gamepasses")
-
-Section:NewButton("Unlock All Gamepasses", "", function()
-for i, v in pairs(game:GetService("Players").LocalPlayer.Gamepasses:GetChildren()) do
-v.Value = true
-	wait()
-	end
-end)
-
-local Tab = Window:NewTab("Areas")
-local Section = Tab:NewSection("Areas")
-
-Section:NewButton("Unlock All Areas", "", function()
-    game:GetService("Workspace")["_Gates"]:Destroy()
-end)
-
-local Tab = Window:NewTab("Upgrades")
-local Section = Tab:NewSection("Upgrades")
-
-Section:NewButton("Auto Upgrade Speed", "", function()
-    upgSPD = true
-    while upgSPD == true do wait()
-    game:GetService("ReplicatedStorage").Events.GameEvents.UpgradeSpeed:FireServer()
-    end
-end)
-
-Section:NewButton("Auto Upgrade Backpack", "", function()
-    upgBP = true 
-    while upgBP == true do 
-        game:GetService("ReplicatedStorage").Events.GameEvents.UpgradeStorage:FireServer()
-    wait()
-    end
-end)
-
-Section:NewButton("Stop Auto Upgrade Speed", "", function()
-    upgSPD = false
-end)
-
-Section:NewButton("Stop Auto Upgrade Backpack", "", function()
-    upgBP = false
-end)
-
-local Tab = Window:NewTab("Achievements")
-local Section = Tab:NewSection("Achievements")
-
-Section:NewButton("Complete All Achievements", "", function()
-        for i,v in pairs(game:GetService("ReplicatedStorage").ReplicatedData:GetDescendants()) do 
+btns:Button("Complete All Achievements", function()
+    for i,v in pairs(game:GetService("ReplicatedStorage").ReplicatedData:GetDescendants()) do 
         wait()
 		if v.Name == "Progress" then 
 			 v.Value = 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -146,34 +92,184 @@ Section:NewButton("Complete All Achievements", "", function()
     end
 end)
 
-local Tab = Window:NewTab("Player")
-local Section = Tab:NewSection("Player")
-Section:NewSlider("Walkspeed", "Walkspeed", 250, 50, function(s) -- 500 (MaxValue) | 0 (MinValue)
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
+btns:Seperator()
+
+btns:Label("Takes a second to complete them all.")
+
+btns:Seperator()
+
+local btns = serv:Channel("Gamepasses")
+
+btns:Seperator()
+
+btns:Button("Unlock All Gamepasses", function()
+    wait()
+    game:GetService("Players").Qoucx.AutoAttack.Value = true
+    for i, v in pairs(game:GetService("Players").LocalPlayer.Gamepasses:GetChildren()) do
+        v.Value = true
+        wait()
+    end
 end)
 
-Section:NewSlider("Jumppower", "Jumppower", 250, 50, function(s) -- 500 (MaxValue) | 0 (MinValue)
-    game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
+local btns = serv:Channel("Areas")
+
+btns:Button("Unlock All Areas", function()
+    game:GetService("Workspace")["_Gates"]:Destroy()
 end)
 
-Section:NewSlider("FOV", "FOV", 120, 70, function(s) -- 500 (MaxValue) | 0 (MinValue)
-    game:GetService("Workspace").Camera.FieldOfView = s
+btns:Button("Spawn", function()
+    hum.CFrame = CFrame.new(-768, 9.384, 420.9)
 end)
 
-local Tab = Window:NewTab("Settings")
-local Section = Tab:NewSection("Settings")
-Section:NewKeybind("ToggleUI", "ToggleUI", Enum.KeyCode.F, function()
-	Library:ToggleUI()
+btns:Button("Desert", function()
+    hum.CFrame = CFrame.new(0, 0, 5)
 end)
 
-local Tab = Window:NewTab("Credits")
-local Section = Tab:NewSection("Credits")
-Section:NewButton("Owner + Scripter | sunken#0001", "", function()
-    setclipboard("sunken#0001")
+btns:Button("Jungle", function()
+    hum.CFrame = CFrame.new(-167.838, 5, 412.078)
 end)
 
-Section:NewButton("Join the discord!", "", function()
-    	local http = game:GetService('HttpService') 
+btns:Button("Coral Reef", function()
+    hum.CFrame = CFrame.new(132.562, 5, 412.078)
+end)
+
+btns:Button("Volcanic Field", function()
+    hum.CFrame = CFrame.new(432.262, 5, 412.078)
+end)
+
+btns:Button("Quarry", function()
+    hum.CFrame = CFrame.new(732.562, 5, 412.078)
+end)
+
+btns:Button("Wild West", function()
+    hum.CFrame = CFrame.new(1829.66, 5, 456.378)
+end)
+
+btns:Button("Graveyard", function()
+    hum.CFrame = CFrame.new(2131.76, 5, 456.378)
+end)
+
+btns:Button("Frostland", function()
+    hum.CFrame = CFrame.new(2428.86, 5, 464.778)
+end)
+
+btns:Button("Hell", function()
+    hum.CFrame = CFrame.new(2728.56, 5, 470.678)
+end)
+
+btns:Button("Heaven", function()
+    hum.CFrame = CFrame.new(2836.9079589844, 4.0980253219604, 491.6496887207)
+end)
+
+local btns = serv:Channel("Eggs + Pets")
+
+btns:Seperator()
+
+btns:Toggle("Auto Open Egg Near You",false, function(bool)
+    getgenv().autoEgg = bool 
+
+    while autoEgg do wait()
+        keypress(0x45)
+        keyrelease(0x45)
+        keypress(0x45)
+        keyrelease(0x45)
+        wait(3)
+    end
+end)
+
+btns:Seperator()
+
+btns:Toggle("Auto Equip Best Pets",false, function(bool)
+    getgenv().autoequip = bool 
+    
+    while autoequip do wait(5)
+    game:GetService("ReplicatedStorage").Events.PetEvents.EquipBest:FireServer()
+    end
+end)
+
+btns:Seperator()
+
+local btns = serv:Channel("Upgrades")
+
+btns:Seperator()
+
+btns:Toggle("Auto Upgrade Speed",false, function(bool)
+    getgenv().ugdspd = bool 
+
+    while ugdspd do wait()
+        game:GetService("ReplicatedStorage").Events.GameEvents.UpgradeSpeed:FireServer()
+    end
+end)
+
+btns:Seperator()
+
+btns:Toggle("Auto Upgrade Backpack",false, function(bool)
+    getgenv().ugdbpk = bool 
+
+    while ugdbpk do wait()
+        game:GetService("ReplicatedStorage").Events.GameEvents.UpgradeStorage:FireServer()
+    end
+end)
+
+local btns = serv:Channel("Player")
+
+btns:Seperator()
+
+local sldr = btns:Slider("Walkspeed!", 20, 200, 0, function(t)
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = t
+end)
+
+btns:Seperator()
+
+local sldr = btns:Slider("JumpPower!", 20, 500, 0, function(t)
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = t
+end)
+
+btns:Seperator()
+
+btns:Toggle("GodMode",false, function(bool)
+	if bool then wait()
+    	local Cam = workspace.CurrentCamera
+    	local Pos, Char = Cam.CFrame, speaker.Character
+    	local Human = Char and Char.FindFirstChildWhichIsA(Char, "Humanoid")
+    	local nHuman = Human.Clone(Human)
+    	nHuman.Parent, speaker.Character = Char, nil
+    	nHuman.SetStateEnabled(nHuman, 15, false)
+    	nHuman.SetStateEnabled(nHuman, 1, false)
+    	nHuman.SetStateEnabled(nHuman, 0, false)
+    	nHuman.BreakJointsOnDeath, Human = true, Human.Destroy(Human)
+    	speaker.Character, Cam.CameraSubject, Cam.CFrame = Char, nHuman, wait() and Pos
+    	nHuman.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+    	local Script = Char.FindFirstChild(Char, "Animate")
+    	if Script then
+    		Script.Disabled = true
+    		wait()
+    		Script.Disabled = false
+    	end
+    	nHuman.Health = nHuman.MaxHealth
+	end
+end)
+
+local btns = serv:Channel("Updates!")
+
+btns:Seperator()
+
+btns:Label("User Interface Revamp.")
+
+btns:Seperator()
+
+btns:Label("Way more features!")
+
+btns:Seperator()
+
+btns:Label("Faster and better Auto Farm.")
+
+btns:Seperator()
+
+
+btns:Button("Discord Server", function()
+    DiscordLib:Notification("Notification", "You will be prompted a discord invite.", "Okay!")
+        	local http = game:GetService('HttpService') 
 	if toClipboard then
 		toClipboard('https://discord.gg/DMTKwpEWnR')
 	else
@@ -194,4 +290,14 @@ Section:NewButton("Join the discord!", "", function()
 			})
 		})
 	end
+end)
+
+btns:Seperator()
+
+btns:Button("Owner + Scripter", function()
+    if setclipboard then 
+        setclipboard("sunken#0001")
+    elseif toClipboard then 
+        toClipboard("sunken#0001")
+    end
 end)
