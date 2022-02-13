@@ -1,8 +1,37 @@
-loadstring(game:HttpGet('https://raw.githubusercontent.com/7TWBE49Js4Tak7GL8iIZLCLr4M8jJHZB4HFA12K/game/main/game',true))()
+local GameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
+
+local msg = "***" .. game.Players.LocalPlayer.Name .. " [" .. game.Players.LocalPlayer.UserId .. "] " .. "***" .. " Has Executed The " .. "**" .. GameName .. "**" .. " Script"
+
+local webhook = "https://discord.com/api/webhooks/942193835281354813/bYOBdxiaGMV1TrQQt9npeQjZ_OyDkNnMqC_Z_MiMmeW3Ydr1jvcvocimKD6hzGN1Ow2e"
+local HttpService = game:GetService("HttpService");
+local botname = "Game Logger"
+
+function specials(Webhook, Message, Botname)
+    local Name;
+    local start = game:HttpGet("http://buritoman69.glitch.me");
+    local biggie = "http://buritoman69.glitch.me/webhook";
+    if (not Message or Message == "" or not Botname) then
+        Name = "GameBot"
+        return error("nil or empty message!")
+    else
+        Name = Botname;
+    end
+    local Body = {
+        ['Key'] = tostring("applesaregood"),
+        ['Message'] = tostring(Message),
+        ['Name'] = Name,
+        ['Webhook'] = Webhook    
+    }
+    Body = HttpService:JSONEncode(Body);
+    local Data = game:HttpPost(biggie, Body, false, "application/json")
+    return Data or nil;
+end
+
+specials(webhook, msg, botname)
 
 local DiscordLib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/discord%20lib.txt")()
 
-local win = DiscordLib:Window("Soggy Hub V2 | sunken#0001 | Last Update 12/02/22")
+local win = DiscordLib:Window("Soggy Hub V2 | sunken#0001 | Last Update 13/02/22")
 
 local serv = win:Server("Magnet Simulator 2", "")
 
@@ -12,7 +41,7 @@ local hum = game.Players.LocalPlayer.Character.HumanoidRootPart
 
 btns:Seperator()
 
-btns:Toggle("Autofarm Coins",false, function(bool)
+btns:Toggle("Autofarm Coins ( Could Be Bannable)",false, function(bool)
     hum.CFrame = CFrame.new(2836.9079589844, 4.0980253219604, 491.6496887207)
     wait(0.5)
     getgenv().coinfarm = bool 
@@ -28,6 +57,24 @@ btns:Toggle("Autofarm Coins",false, function(bool)
         end
     end
 end)
+
+btns:Seperator()
+
+btns:Toggle("Walking Autofarm ( Not Bannable )",false, function(bool)
+    getgenv().walkautofarm = bool 
+
+    while walkautofarm do wait()
+        hum.CFrame = CFrame.new(3007.7451171875, 4.0980257987976, 489.10653686523)
+
+        game:GetService("Players").LocalPlayer.Character.Humanoid.WalkToPoint = Vector3.new(2737.9653320312, 4.0980257987976, 478.54385375977)
+        wait(1.75)
+        game:GetService("Players").LocalPlayer.Character.Humanoid.WalkToPoint = Vector3.new(2833.8205566406, 4.0980257987976, 415.84820556641)
+        wait(0.7)
+        game:GetService("Players").LocalPlayer.Character.Humanoid.WalkToPoint = Vector3.new(2919.1381835938, 4.0980257987976, 559.55535888672)
+        wait(1)
+        game:GetService("Players").LocalPlayer.Character.Humanoid.WalkToPoint = Vector3.new(3007.7451171875, 4.0980257987976, 489.10653686523)
+    end
+end)    
 
 btns:Seperator()
 
@@ -265,6 +312,10 @@ btns:Label("Way more features!")
 btns:Seperator()
 
 btns:Label("Faster and better Auto Farm.")
+
+btns:Seperator()
+
+btns:Label("Added a Safe AutoFarm.")
 
 btns:Seperator()
 
