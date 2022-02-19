@@ -10,18 +10,14 @@ local hum = game.Players.LocalPlayer.Character.HumanoidRootPart
 
 btns:Seperator()
 
-btns:Toggle("Autofarm Coins ( Could Be Bannable)",false, function(bool)
-    hum.CFrame = CFrame.new(2836.9079589844, 4.0980253219604, 491.6496887207)
-    wait(0.5)
-    getgenv().coinfarm = bool 
+btns:Toggle("Teleport Coins To You",false, function(bool)
+    getgenv().tpcoins = bool 
 
-    while coinfarm do wait()
-        for i,v in pairs(game:GetService("Workspace").CollectibleCoins.Heaven["Heaven_BigCoinStack"]:GetDescendants()) do 
-            if v.Name == "Base" then wait(1.5)
-                game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0.75, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),{CFrame = v.CFrame}):Play()
-                if not bool then 
-                    break 
-                end            
+    while tpcoins do wait()
+
+        for i,v in pairs(game:GetService("Workspace").Coins:GetDescendants()) do 
+            if v.Name == "Base" then 
+                v.CFrame = hum.CFrame
             end
         end
     end
@@ -29,33 +25,7 @@ end)
 
 btns:Seperator()
 
-btns:Toggle("Walking Autofarm ( Not Bannable )",false, function(bool)
-    getgenv().walkautofarm = bool 
-
-    while walkautofarm do wait()
-        hum.CFrame = CFrame.new(3007.7451171875, 4.0980257987976, 489.10653686523)
-
-        game:GetService("Players").LocalPlayer.Character.Humanoid.WalkToPoint = Vector3.new(2737.9653320312, 4.0980257987976, 478.54385375977)
-        wait(1.75)
-        game:GetService("Players").LocalPlayer.Character.Humanoid.WalkToPoint = Vector3.new(2833.8205566406, 4.0980257987976, 415.84820556641)
-        wait(0.7)
-        game:GetService("Players").LocalPlayer.Character.Humanoid.WalkToPoint = Vector3.new(2919.1381835938, 4.0980257987976, 559.55535888672)
-        wait(1)
-        game:GetService("Players").LocalPlayer.Character.Humanoid.WalkToPoint = Vector3.new(3007.7451171875, 4.0980257987976, 489.10653686523)
-    end
-end)    
-
-btns:Seperator()
-
-btns:Label("This will not stop upon turning it off.")
-
-btns:Seperator()
-
-btns:Label("Just wait 30 seconds, or only use it.")
-
-btns:Seperator()
-
-btns:Label("When you are going to AFK grind.")
+btns:Label("Teleport Coins To You And Then Just Stand Still Near Them.")
 
 btns:Seperator()
 
@@ -63,7 +33,7 @@ btns:Toggle("Auto Sell",false, function(bool)
     getgenv().autosell = bool 
 
     while autosell do wait()
-        for i,v in pairs(game:GetService("Workspace").Rings.Sellx25:GetDescendants()) do 
+        for i,v in pairs(game:GetService("Workspace").Rings.Sellx45:GetDescendants()) do 
             if v.Name == "TouchInterest" and v.Parent then
                 wait()
                 firetouchinterest(game.Players.LocalPlayer.Character.Head, v.Parent, 0)
@@ -135,49 +105,35 @@ btns:Button("Unlock All Areas", function()
     game:GetService("Workspace")["_Gates"]:Destroy()
 end)
 
-btns:Button("Spawn", function()
-    hum.CFrame = CFrame.new(-768, 9.384, 420.9)
+btns:Button("Best World", function()
+    hum.CFrame = CFrame.new(5449.22998046875, 2.453197717666626, 132.26145935058594)
 end)
 
-btns:Button("Desert", function()
-    hum.CFrame = CFrame.new(0, 0, 5)
+local btns = serv:Channel("Magnet")
+
+btns:Seperator()
+
+btns:Button("Modify Magnet", function()
+    wait()
+    for i,v in pairs(game:GetService("ReplicatedStorage").ReplicatedData[game.Players.LocalPlayer.Name].Magnets:GetDescendants()) do 
+        if v.ClassName == "StringValue" then 
+            v.Value = 100
+        end
+    end
 end)
 
-btns:Button("Jungle", function()
-    hum.CFrame = CFrame.new(-167.838, 5, 412.078)
+btns:Seperator()
+
+btns:Toggle("Auto Buy Magnets",false, function(bool)
+    getgenv().magnetbuy = bool 
+
+    while magnetbuy do wait()
+        for i, v in pairs(game:GetService("Workspace").MagnetShop.Magnets:GetChildren()) do
+            ReplicatedStorage.Events.GameEvents.BuyMagnet:FireServer(v.Name) wait(.5)
+        end
+    end
 end)
 
-btns:Button("Coral Reef", function()
-    hum.CFrame = CFrame.new(132.562, 5, 412.078)
-end)
-
-btns:Button("Volcanic Field", function()
-    hum.CFrame = CFrame.new(432.262, 5, 412.078)
-end)
-
-btns:Button("Quarry", function()
-    hum.CFrame = CFrame.new(732.562, 5, 412.078)
-end)
-
-btns:Button("Wild West", function()
-    hum.CFrame = CFrame.new(1829.66, 5, 456.378)
-end)
-
-btns:Button("Graveyard", function()
-    hum.CFrame = CFrame.new(2131.76, 5, 456.378)
-end)
-
-btns:Button("Frostland", function()
-    hum.CFrame = CFrame.new(2428.86, 5, 464.778)
-end)
-
-btns:Button("Hell", function()
-    hum.CFrame = CFrame.new(2728.56, 5, 470.678)
-end)
-
-btns:Button("Heaven", function()
-    hum.CFrame = CFrame.new(2836.9079589844, 4.0980253219604, 491.6496887207)
-end)
 
 local btns = serv:Channel("Eggs + Pets")
 
